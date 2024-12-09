@@ -57,7 +57,7 @@ const userLogin = async (payload) => {
     );
 
     return {
-      user: { name: isUserExist.fullName, email: isUserExist.email },
+      user: { id:isUserExist._id,name: isUserExist.fullName, email: isUserExist.email },
       token,
     };
   } catch (err) {

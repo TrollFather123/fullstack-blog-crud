@@ -1,4 +1,6 @@
-const userRouter = require("./routes/user.router")
+const userRouter = require("./routes/user.router");
+const blogRouter = require("./routes/blog.router");
+const commentRouter = require("./routes/comment.route");
 const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
@@ -21,6 +23,8 @@ app.use(
   })
 );
 app.use("/api/user",userRouter);
+app.use("/api/blog",blogRouter);
+app.use("/api/comment",commentRouter);
 
 app.get("/",(req,res)=>{
   res.send("API is running")
