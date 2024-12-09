@@ -1,9 +1,11 @@
+const userRouter = require("./routes/user.router")
 const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const cors = require("cors");
-const path = require("path");
-require("dotenv").config({ path: path.resolve(__dirname, "../.env") });
+require("dotenv").config({
+  path:'./.env'
+});
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -18,6 +20,11 @@ app.use(
     path: "*",
   })
 );
+app.use("/api/user",userRouter);
+
+app.get("/",(req,res)=>{
+  res.send("API is running")
+})
 app.listen(PORT, () => {
   console.log(`Server is running at ${PORT}`);
 });
@@ -30,3 +37,6 @@ mongoose
   .catch((err) => {
     console.error("Database connection error:", err.message);
   });
+
+
+module.exports = app
