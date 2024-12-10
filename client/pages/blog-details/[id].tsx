@@ -80,7 +80,12 @@ const Index = () => {
       .unwrap()
       .then((data) => {
         if (data?.status === 201) {
-          dispatch(getSingleBlog(router.query.id as string));
+          dispatch(getSingleBlog(router.query.id as string)).unwrap()
+          .then((data) => {
+            if (data?.status === 200) {
+              setUserData(data?.blog);
+            }
+          });
           reset();
         }
       });
