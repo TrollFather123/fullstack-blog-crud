@@ -1,6 +1,7 @@
 const userRouter = require("./routes/user.router");
 const blogRouter = require("./routes/blog.router");
 const commentRouter = require("./routes/comment.route");
+const path = require("path")
 const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
@@ -22,6 +23,7 @@ app.use(
     path: "*",
   })
 );
+app.use(express.static(path.join(__dirname,"public")));
 app.use("/api/user",userRouter);
 app.use("/api/blog",blogRouter);
 app.use("/api/comment",commentRouter);

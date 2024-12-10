@@ -2,16 +2,17 @@ const BlogService = require("../services/blogService");
 
 const createBlog = async (req, res, next) => {
   try {
+
     const payload = {
       ...req.body,
-      comments:[]
-    }
+      comments: [],
+    };
     const { blog } = await BlogService.createBlogService(payload);
 
     return res.status(201).json({
       status: 201,
       message: "Blog created successfully",
-      blog
+      blog,
     });
   } catch (err) {
     return res.status(500).json({
@@ -23,13 +24,14 @@ const createBlog = async (req, res, next) => {
 
 const getBlogDetails = async (req, res, next) => {
   try {
-    const {blog_id} = req.params
+
+    const { blog_id } = req.params;
     const { blog } = await BlogService.getBlogService(blog_id);
 
     return res.status(200).json({
       status: 200,
       message: "Blog fetched successfully",
-      blog
+      blog,
     });
   } catch (err) {
     return res.status(500).json({
@@ -40,6 +42,6 @@ const getBlogDetails = async (req, res, next) => {
 };
 
 module.exports = {
-    createBlog,
-    getBlogDetails
+  createBlog,
+  getBlogDetails,
 };

@@ -66,9 +66,7 @@ const userLogin = async (payload) => {
 };
 
 
-
-
 module.exports = {
   userRegister,
-  userLogin,
+  userLogin
 };
