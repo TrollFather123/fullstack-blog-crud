@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import {
   ILoginPayloadBody,
   IRegisterPayloadBody,
@@ -39,6 +40,20 @@ export const userLogin = createAsyncThunk(
         endpoints.user.login,
         payload
       );
+      return res?.data;
+    } catch (err) {
+      if (err instanceof AxiosError) {
+        throw new Error(err?.message);
+      }
+    }
+  }
+);
+
+export const currentUser = createAsyncThunk(
+  "currentUser",
+  async (id:string) => {
+    try {
+      const res = await axiosInstance.get(`${endpoints.user.details}/${id}`);
       return res?.data;
     } catch (err) {
       if (err instanceof AxiosError) {
@@ -93,6 +108,21 @@ const userSlice = createSlice({
         }
       })
       .addCase(userLogin.rejected, (state, action) => {
+        state.userLoading = false;
+      })
+
+      // For User Details
+
+      .addCase(currentUser.pending, (state, action) => {
+        state.userLoading = true;
+      })
+      .addCase(currentUser.fulfilled, (state, { payload }) => {
+        if (payload?.status === 200) {
+          state.userLoading = false;
+          state.user = payload?.user;
+        }
+      })
+      .addCase(currentUser.rejected, (state, action) => {
         state.userLoading = false;
       });
   },

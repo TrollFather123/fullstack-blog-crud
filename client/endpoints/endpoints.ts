@@ -1,7 +1,8 @@
 export const endpoints =  {
     user:{
         register:"/user/create-user",
-        login:"/user/login-user"
+        login:"/user/login-user",
+        details:"/"
     },
     blog:{
         blog:"/blog",

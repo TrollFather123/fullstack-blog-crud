@@ -66,7 +66,19 @@ const userLogin = async (payload) => {
 };
 
 
+const userDetails = async (id) => {
+  try {
+
+    const user = await User.findById(id);
+
+    return { user };
+  } catch (err) {
+    throw new Error(err.message);
+  }
+};
+
 module.exports = {
   userRegister,
-  userLogin
+  userLogin,
+  userDetails
 };

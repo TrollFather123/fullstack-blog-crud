@@ -20,7 +20,7 @@ const createUser = async (req, res, next) => {
   } catch (err) {
     return res.status(500).json({
       status: 500,
-      message: err.message || "An error occurred while creating the user.",
+      message: err.message,
     });
   }
 };
@@ -45,12 +45,33 @@ const userLogin = async (req, res, next) => {
   } catch (err) {
     return res.status(500).json({
       status: 500,
-      message: err.message || "An error occurred while creating the user.",
+      message: err.message,
+    });
+  }
+};
+
+
+const getUserDetails = async (req, res, next) => {
+  try {
+    const { id} = req.params;
+
+    const { user } = await UserService.userDetails(id);
+
+    return res.status(200).json({
+      status: 200,
+      message: "User details fetched successfully",
+      user,
+    });
+  } catch (err) {
+    return res.status(500).json({
+      status: 500,
+      message: err.message,
     });
   }
 };
 
 module.exports = {
   createUser,
-  userLogin
+  userLogin,
+  getUserDetails
 };
