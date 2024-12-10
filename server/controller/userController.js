@@ -36,7 +36,7 @@ const userLogin = async (req, res, next) => {
       password,
     });
 
-    return res.status(201).json({
+    return res.status(200).json({
       status: 200,
       message: "User login successfully",
       user,
