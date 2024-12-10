@@ -23,7 +23,8 @@ app.use(
     path: "*",
   })
 );
-app.use(express.static(path.join(__dirname,"public")));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
 app.use("/api/user",userRouter);
 app.use("/api/blog",blogRouter);
 app.use("/api/comment",commentRouter);

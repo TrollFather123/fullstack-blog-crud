@@ -52,12 +52,12 @@ const userLogin = async (payload) => {
       { userId: isUserExist._id },
       process.env.JWT_SECRET,
       {
-        expiresIn: "1h",
+        expiresIn: "1d",
       }
     );
 
     return {
-      user: { id:isUserExist._id,name: isUserExist.fullName, email: isUserExist.email },
+      user: { _id:isUserExist._id,name: isUserExist.fullName, email: isUserExist.email },
       token,
     };
   } catch (err) {

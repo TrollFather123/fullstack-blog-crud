@@ -66,6 +66,9 @@ const userSlice = createSlice({
           setCookie(null, "token", payload?.token, {
             path: "/",
           });
+          setCookie(null, "user_id", payload?.user?._id, {
+            path: "/",
+          });
         }
       })
       .addCase(userRegister.rejected, (state, action) => {
@@ -84,6 +87,9 @@ const userSlice = createSlice({
           setCookie(null, "token", payload?.token, {
             path: "/",
           });
+          setCookie(null, "user_id", payload?.user?._id, {
+            path: "/",
+          });
         }
       })
       .addCase(userLogin.rejected, (state, action) => {
@@ -94,4 +100,4 @@ const userSlice = createSlice({
 
 export const {} = userSlice.actions;
 
-export default userSlice;
+export default userSlice.reducer;
