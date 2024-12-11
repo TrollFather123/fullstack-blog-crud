@@ -1,6 +1,6 @@
 const Comment = require("../models/commentModel");
 const Blog = require("../models/blogModel");
-const mongoose = require("mongoose");
+
 
 const createCommentService = async (payload) => {
   try {
@@ -26,8 +26,6 @@ const createCommentService = async (payload) => {
 
 const deleteCommentService = async (commentId) => {
   try {
- 
-
     const isCommentExist = await Comment.findById(commentId);
 
     if (!isCommentExist) {
@@ -56,12 +54,10 @@ const deleteCommentService = async (commentId) => {
   }
 };
 
-
 const updateCommentService = async (id, payload) => {
   try {
-
     const updatedComment = await Comment.findByIdAndUpdate(id, payload, {
-      new: true, 
+      new: true,
     });
 
     return { updatedComment };
@@ -70,12 +66,8 @@ const updateCommentService = async (id, payload) => {
   }
 };
 
-
-
-
-
 module.exports = {
   createCommentService,
   deleteCommentService,
-  updateCommentService
+  updateCommentService,
 };
