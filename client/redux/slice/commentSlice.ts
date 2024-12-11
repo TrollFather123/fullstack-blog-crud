@@ -1,9 +1,7 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import {
-  IBlog,
   IBlogDetailsResponse,
-  IBlogResponse,
   ICommentData,
-  ICreateBlogData,
 } from "@/interfaces/api.all.interface";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { axiosInstance } from "../helper/helper";
@@ -31,6 +29,45 @@ export const createComment = createAsyncThunk(
   }
 );
 
+export const updateComment = createAsyncThunk(
+  "updateComment",
+  async ({
+    commentId,
+    payload,
+  }: {
+    commentId: string;
+    payload: ICommentData;
+  }) => {
+    try {
+      const res = await axiosInstance.put(
+        `${endpoints.comment.updateComment}/${commentId}`,
+        payload
+      );
+      return res?.data;
+    } catch (err) {
+      if (err instanceof AxiosError) {
+        throw new Error(err?.message);
+      }
+    }
+  }
+);
+
+export const deleteComment = createAsyncThunk(
+  "deleteComment",
+  async (commentId: string) => {
+    try {
+      const res = await axiosInstance.delete(
+        `${endpoints.comment.deleteComment}/${commentId}`
+      );
+      return res?.data;
+    } catch (err) {
+      if (err instanceof AxiosError) {
+        throw new Error(err?.message);
+      }
+    }
+  }
+);
+
 const commentSlice = createSlice({
   name: "comments",
   initialState,
@@ -48,6 +85,19 @@ const commentSlice = createSlice({
         }
       })
       .addCase(createComment.rejected, (state, action) => {
+        state.commentLoading = false;
+      })
+
+      // For update Blog
+      .addCase(updateComment.pending, (state, action) => {
+        state.commentLoading = true;
+      })
+      .addCase(updateComment.fulfilled, (state, { payload }) => {
+        if (payload?.status === 201) {
+          state.commentLoading = false;
+        }
+      })
+      .addCase(updateComment.rejected, (state, action) => {
         state.commentLoading = false;
       });
   },

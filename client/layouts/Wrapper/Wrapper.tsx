@@ -1,6 +1,9 @@
 import { Box, BoxProps, styled } from '@mui/material'
 import React from 'react'
-import Header from '../Header/Header'
+import dynamic from 'next/dynamic'
+
+
+const Header = dynamic(()=> import("../Header/Header"),{ssr:false})
 
 
 const WrapperStyle = styled(Box)`

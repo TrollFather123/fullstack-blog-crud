@@ -56,6 +56,7 @@ const getBlogService = async (id) => {
 
 const updateBlogService = async (id, payload) => {
   try {
+    
     const updatedBlog = await Blog.findByIdAndUpdate(id, payload, {
       new: true,
     });
@@ -85,10 +86,24 @@ const deleteBlogService = async (id) => {
   }
 };
 
+
+
+const flatBlogDetails = async (id) => {
+  try {
+    
+    const flatBlog = await Blog.findById(id);
+
+    return { flatBlog };
+  } catch (err) {
+    throw new Error(err?.message);
+  }
+};
+
 module.exports = {
   createBlogService,
   getBlogService,
   getAllBlogServices,
   updateBlogService,
   deleteBlogService,
+  flatBlogDetails
 };

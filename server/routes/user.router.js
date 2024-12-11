@@ -5,6 +5,6 @@ const router = express.Router();
 
 router.post("/create-user",userController.createUser);
 router.post("/login-user",userController.userLogin);
-router.post("/:id",userController.getUserDetails);
+router.get("/:id",userController.getUserDetails);
 
 module.exports = router

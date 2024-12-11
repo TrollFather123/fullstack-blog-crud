@@ -1,5 +1,6 @@
 const Comment = require("../models/commentModel");
 const Blog = require("../models/blogModel");
+const mongoose = require("mongoose");
 
 const createCommentService = async (payload) => {
   try {
@@ -23,17 +24,19 @@ const createCommentService = async (payload) => {
   }
 };
 
-const deleteCommentService = async (blogId, commentId) => {
+const deleteCommentService = async (commentId) => {
   try {
-    const blog = await Blog.findById(blogId);
-    if (!blog) {
-      throw new Error("Blog not found");
-    }
+ 
 
     const isCommentExist = await Comment.findById(commentId);
 
     if (!isCommentExist) {
       throw new Error("Comment not found in the blog");
+    }
+
+    const blog = await Blog.findById(isCommentExist?.blogId);
+    if (!blog) {
+      throw new Error("Blog not found");
     }
 
     blog.comments = blog.comments.filter(
@@ -53,7 +56,26 @@ const deleteCommentService = async (blogId, commentId) => {
   }
 };
 
+
+const updateCommentService = async (id, payload) => {
+  try {
+
+    const updatedComment = await Comment.findByIdAndUpdate(id, payload, {
+      new: true, 
+    });
+
+    return { updatedComment };
+  } catch (err) {
+    throw new Error(err?.message);
+  }
+};
+
+
+
+
+
 module.exports = {
   createCommentService,
-  deleteCommentService
+  deleteCommentService,
+  updateCommentService
 };

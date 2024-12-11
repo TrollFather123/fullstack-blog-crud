@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import {
   IBlog,
   IBlogDetailsResponse,
@@ -58,6 +59,36 @@ export const getSingleBlog = createAsyncThunk(
   }
 );
 
+export const updateBlog = createAsyncThunk(
+  "updateBlog",
+  async ({blog_id,payload}:{blog_id: string , payload : ICreateBlogData}) => {
+    try {
+      const res = await axiosInstance.put(`${endpoints.blog.blog}/${blog_id}`,payload);
+      return res?.data;
+    } catch (err) {
+      if (err instanceof AxiosError) {
+        throw new Error(err?.message);
+      }
+    }
+  }
+);
+
+export const deleteBlog = createAsyncThunk(
+  "deleteBlog",
+  async (blog_id: string) => {
+    try {
+      const res = await axiosInstance.delete(
+        `${endpoints.blog.blog}/${blog_id}`
+      );
+      return res?.data;
+    } catch (err) {
+      if (err instanceof AxiosError) {
+        throw new Error(err?.message);
+      }
+    }
+  }
+);
+
 const blogSlice = createSlice({
   name: "blogs",
   initialState,
@@ -100,10 +131,35 @@ const blogSlice = createSlice({
       .addCase(getSingleBlog.fulfilled, (state, { payload }) => {
         if (payload?.status === 200) {
           state.blogLoading = false;
-      
         }
       })
       .addCase(getSingleBlog.rejected, (state, action) => {
+        state.blogLoading = false;
+      })
+
+      // For Update Blog
+      .addCase(updateBlog.pending, (state, action) => {
+        state.blogLoading = true;
+      })
+      .addCase(updateBlog.fulfilled, (state, { payload }) => {
+        if (payload?.status === 200) {
+          state.blogLoading = false;
+        }
+      })
+      .addCase(updateBlog.rejected, (state, action) => {
+        state.blogLoading = false;
+      })
+
+      // For Update Blog
+      .addCase(deleteBlog.pending, (state, action) => {
+        state.blogLoading = true;
+      })
+      .addCase(deleteBlog.fulfilled, (state, { payload }) => {
+        if (payload?.status === 200) {
+          state.blogLoading = false;
+        }
+      })
+      .addCase(deleteBlog.rejected, (state, action) => {
         state.blogLoading = false;
       });
   },

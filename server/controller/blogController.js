@@ -2,13 +2,11 @@ const BlogService = require("../services/blogService");
 
 const createBlog = async (req, res, next) => {
   try {
-
     const blogImage = req?.file ? `${req.file.filename}` : "";
-
 
     const payload = {
       ...req.body,
-      image:blogImage,
+      image: blogImage,
       comments: [],
     };
     const { blog } = await BlogService.createBlogService(payload);
@@ -21,7 +19,7 @@ const createBlog = async (req, res, next) => {
   } catch (err) {
     return res.status(500).json({
       status: 500,
-      message: err.message ,
+      message: err.message,
     });
   }
 };
@@ -37,7 +35,7 @@ const getAllBlogs = async (req, res, next) => {
   } catch (err) {
     return res.status(500).json({
       status: 500,
-      message: err.message ,
+      message: err.message,
     });
   }
 };
@@ -54,28 +52,29 @@ const getBlogDetails = async (req, res, next) => {
   } catch (err) {
     return res.status(500).json({
       status: 500,
-      message: err.message ,
+      message: err.message,
     });
   }
 };
 
 const updateBlog = async (req, res, next) => {
   try {
-
-    const blogImage = req?.file ? `${req.file.filename}` : "";
-
     const { blog_id } = req.params;
-    const { payload } = req.body;
+
+
+    const { flatBlog } = await BlogService.flatBlogDetails(blog_id);
+
+    const blogImage = req?.file ? `${req.file.filename}` : flatBlog.image;
 
     const data = {
-      ...payload,
-      image:blogImage
-    }
-    
-    const { updatedBlog } = await BlogService.updateBlogService(
-      blog_id,
-      data
-    );
+      ...req.body,
+      comments:flatBlog.comments,
+      image: blogImage,
+    };
+
+    console.log(data,req.body,"data")
+
+    const { updatedBlog } = await BlogService.updateBlogService(blog_id, data);
 
     return res.status(200).json({
       status: 200,
@@ -85,7 +84,7 @@ const updateBlog = async (req, res, next) => {
   } catch (err) {
     return res.status(500).json({
       status: 500,
-      message: err.message ,
+      message: err.message,
     });
   }
 };
@@ -93,17 +92,16 @@ const updateBlog = async (req, res, next) => {
 const deleteBlog = async (req, res, next) => {
   try {
     const { blog_id } = req.params;
-    const { message } = await BlogService.deleteBlogService(blog_id)
+    const { message } = await BlogService.deleteBlogService(blog_id);
 
     return res.status(204).json({
       status: 204,
       message,
-
     });
   } catch (err) {
     return res.status(500).json({
       status: 500,
-      message: err.message ,
+      message: err.message,
     });
   }
 };
@@ -113,5 +111,5 @@ module.exports = {
   getBlogDetails,
   getAllBlogs,
   updateBlog,
-  deleteBlog
+  deleteBlog,
 };

@@ -17,18 +17,15 @@ const createComment = async (req, res, next) => {
   } catch (err) {
     return res.status(500).json({
       status: 500,
-      message: err.message || "An error occurred while creating the user.",
+      message: err.message,
     });
   }
 };
 
 const deleteComment = async (req, res, next) => {
   try {
-    const { blogId, commentId } = req.body;
-    const { message } = await CommentService.deleteCommentService({
-      blogId,
-      commentId,
-    });
+    const { commentId } = req.params;
+    const { message } = await CommentService.deleteCommentService(commentId);
 
     return res.status(204).json({
       status: 204,
@@ -37,12 +34,34 @@ const deleteComment = async (req, res, next) => {
   } catch (err) {
     return res.status(500).json({
       status: 500,
-      message: err.message || "An error occurred while creating the user.",
+      message: err.message,
     });
   }
 };
 
+const updateComment = async (req, res, next) => {
+  try {
+    const { id } = req.params; 
+    const payload = req.body; 
+
+    const { updatedComment } = await CommentService.updateCommentService(id, payload);
+
+    return res.status(204).json({
+      status: 204,
+      message: "Comment updated successfully!!!",
+      data: updatedComment,
+    });
+  } catch (err) {
+    return res.status(500).json({
+      status: 500,
+      message: err.message,
+    });
+  }
+};
+
+
 module.exports = {
   createComment,
-  deleteComment
+  deleteComment,
+  updateComment,
 };

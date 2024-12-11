@@ -5,6 +5,7 @@ const express = require("express");
 const router = express.Router();
 
 router.post("/create-comment",authToken,commentController.createComment);
-router.post("/delete-comment",authToken,commentController.deleteComment);
+router.delete("/delete-comment/:commentId",authToken,commentController.deleteComment);
+router.put("/update-comment/:id",authToken,commentController.updateComment);
 
 module.exports = router

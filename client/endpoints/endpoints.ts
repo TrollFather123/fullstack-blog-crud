@@ -2,7 +2,7 @@ export const endpoints =  {
     user:{
         register:"/user/create-user",
         login:"/user/login-user",
-        details:"/"
+        details:"/user"
     },
     blog:{
         blog:"/blog",
@@ -10,6 +10,8 @@ export const endpoints =  {
         blogDetails:"/blog/blog-details"
     },
     comment:{
-        createComment:"/comment/create-comment"
+        createComment:"/comment/create-comment",
+        updateComment:"/comment/update-comment",
+        deleteComment:"/comment/delete-comment"
     }
 }

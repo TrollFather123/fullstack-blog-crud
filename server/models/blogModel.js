@@ -17,8 +17,7 @@ const blogSchema = new mongoose.Schema(
     },
     title: {
       type: String,
-      reuired:[true,"Blog Title is required"],
-      unique:true
+      reuired:[true,"Blog Title is required"]
     },
     description: {
       type: String,

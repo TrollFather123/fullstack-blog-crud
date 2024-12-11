@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useAppDispatch } from "@/hooks/useAppDispatch";
 import { ICreateBlogData } from "@/interfaces/api.all.interface";
 import Wrapper from "@/layouts/Wrapper/Wrapper";
@@ -5,15 +6,13 @@ import { createBlog } from "@/redux/slice/blogSlice";
 import { blogSchema } from "@/schema/userShema";
 import { yupResolver } from "@hookform/resolvers/yup";
 import {
-  Box,
+
   Button,
   Container,
   Grid2,
   styled,
   TextField,
-  Typography,
 } from "@mui/material";
-import Link from "next/link";
 import { useRouter } from "next/router";
 import { parseCookies } from "nookies";
 import React, { useState } from "react";
@@ -54,8 +53,8 @@ const Index = () => {
       .then((data) => {
         if (data?.status === 201) {
           toast.success(data?.message);
-        //   router.push("/");
-        //   reset();
+          router.push("/");
+          reset();
         }
       })
       .catch((err) => {

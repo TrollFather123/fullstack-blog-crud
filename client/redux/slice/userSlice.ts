@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import {
+  IGetUserDataResponse,
   ILoginPayloadBody,
   IRegisterPayloadBody,
   IUserData,
@@ -8,12 +9,12 @@ import {
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { axiosInstance } from "../helper/helper";
 import { endpoints } from "@/endpoints/endpoints";
-import { setCookie } from "nookies";
+import { destroyCookie, setCookie } from "nookies";
 import { AxiosError } from "axios";
 
 const initialState = {
   userLoading: false,
-  user: null as IUserData | null,
+  userData: null as IUserData | null,
 };
 
 export const userRegister = createAsyncThunk(
@@ -50,10 +51,10 @@ export const userLogin = createAsyncThunk(
 );
 
 export const currentUser = createAsyncThunk(
-  "currentUser",
+  "userdetails",
   async (id:string) => {
     try {
-      const res = await axiosInstance.get(`${endpoints.user.details}/${id}`);
+      const res = await axiosInstance.get<IGetUserDataResponse>(`${endpoints.user.details}/${id}`);
       return res?.data;
     } catch (err) {
       if (err instanceof AxiosError) {
@@ -66,10 +67,18 @@ export const currentUser = createAsyncThunk(
 const userSlice = createSlice({
   name: "user",
   initialState,
-  reducers: {},
+  reducers: {
+    LogoutUser:()=>{
+      destroyCookie(null, "token", {
+        path: "/",
+      });
+      destroyCookie(null, "user_id", {
+        path: "/",
+      });
+    }
+  },
   extraReducers: (builder) => {
     builder
-
       // For Register User
       .addCase(userRegister.pending, (state, action) => {
         state.userLoading = true;
@@ -77,7 +86,7 @@ const userSlice = createSlice({
       .addCase(userRegister.fulfilled, (state, { payload }) => {
         if (payload?.status === 201) {
           state.userLoading = false;
-          state.user = payload?.user;
+          state.userData = payload?.user;
           setCookie(null, "token", payload?.token, {
             path: "/",
           });
@@ -98,7 +107,7 @@ const userSlice = createSlice({
       .addCase(userLogin.fulfilled, (state, { payload }) => {
         if (payload?.status === 200) {
           state.userLoading = false;
-          state.user = payload?.user;
+          state.userData = payload?.user;
           setCookie(null, "token", payload?.token, {
             path: "/",
           });
@@ -119,7 +128,7 @@ const userSlice = createSlice({
       .addCase(currentUser.fulfilled, (state, { payload }) => {
         if (payload?.status === 200) {
           state.userLoading = false;
-          state.user = payload?.user;
+          state.userData = payload?.user;
         }
       })
       .addCase(currentUser.rejected, (state, action) => {
@@ -128,6 +137,6 @@ const userSlice = createSlice({
   },
 });
 
-export const {} = userSlice.actions;
+export const {LogoutUser} = userSlice.actions;
 
 export default userSlice.reducer;

@@ -154,3 +154,18 @@ export interface IBlogDetailsResponse {
 
 
 
+export interface IGetUserDataResponse {
+  status: number;
+  message: string;
+  user: IGetUserData;
+}
+
+export interface IGetUserData {
+  _id: string;
+  fullName: string;
+  email: string;
+  password: string;
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
+}
